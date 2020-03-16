@@ -17,4 +17,4 @@ git commit -m 'deploy'
 git config --local credential.helper ""
 git push -f https://github.com/gcba/lavatelasmanos.git master:gh-pages
 
-cd -
+cd - 
