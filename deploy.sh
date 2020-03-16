@@ -15,6 +15,6 @@ git commit -m 'deploy'
 
 # if you are deploying to https://<USERNAME>.github.io/<REPO>
 git config --local credential.helper ""
-git push -f https://github.com/guidobonomini/cancionesymanos.git master:gh-pages
+git push -f https://github.com/gcba/lavatelasmanos.git master:gh-pages
 
 cd -
