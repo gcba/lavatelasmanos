@@ -9,10 +9,12 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.8.7",
+    "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
     "bootstrap-vue": "^2.6.1",
     "core-js": "^3.6.4",
     "genius-lyrics-api": "^1.2.0",
+    "simple-oauth2": "^3.3.0",
     "vue": "^2.6.11",
     "vue-html2canvas": "0.0.4",
     "vue-router": "^3.1.5"

@@ -16,7 +16,8 @@
 
 <script>
 import Lyrics from "@/components/Lyrics.vue";
-import { getLyrics } from "genius-lyrics-api";
+// import { getLyrics } from "genius-lyrics-api";
+import axios from 'axios';
 
 export default {
   name: "Buscador",
@@ -24,24 +25,36 @@ export default {
     return {
       cancion: "",
       artista: "",
-      letra: []
+      letra: [],
+      info: {}
     };
   },
   components:{
     Lyrics
   },
   methods: {
+    // callGeniusApi() {
+    //   const options = {
+    //     apiKey: "9VyPZTthc2yB42unifChcbqkLev4JFKGzkzQXYi9UBjo_j87R-LIbaHys2KwAKu7", // genius developer access token
+    //     title: this.cancion,
+    //     artist: this.artista,
+    //     optimizeQuery: true
+    //   };
+    //   getLyrics(options).then(lyrics => {
+    //     lyrics = lyrics.split('\n')
+    //     this.letra = lyrics.filter(n=>n && !n.startsWith('['));
+    //   })
+    // },
     callGeniusApi() {
-      const options = {
-        apiKey: "9VyPZTthc2yB42unifChcbqkLev4JFKGzkzQXYi9UBjo_j87R-LIbaHys2KwAKu7", // genius developer access token
-        title: this.cancion,
-        artist: this.artista,
-        optimizeQuery: true
-      };
-      getLyrics(options).then(lyrics => {
-        lyrics = lyrics.split('\n')
-        this.letra = lyrics.filter(n=>n && !n.startsWith('['));
-      })
+      axios
+      .get('https://api.genius.com/search?q=paranoid&access_token=9VyPZTthc2yB42unifChcbqkLev4JFKGzkzQXYi9UBjo_j87R-LIbaHys2KwAKu7')
+      // .get('https://api.genius.com/oauth/authorize?'+
+      //                                                 'client_id=tI-b_xaAtcPl0HD9HlH-_OsytshvmruhM2KzkbtDJGMMwiCExZ6l2dXt5Jti1r64&'+
+      //                                                 'redirect_uri=http://localhost:8080&'+
+      //                                                 'scope=annotation&'+
+      //                                                 'state=200&'+
+      //                                                 'response_type=code')
+      .then(response => (this.info = response))
     }
   }
 };
