@@ -16,8 +16,8 @@
 
 <script>
 import Lyrics from "@/components/Lyrics.vue";
-// import { getLyrics } from "genius-lyrics-api";
 import axios from 'axios';
+import cio from 'cheerio';
 
 export default {
   name: "Buscador",
@@ -33,28 +33,31 @@ export default {
     Lyrics
   },
   methods: {
-    // callGeniusApi() {
-    //   const options = {
-    //     apiKey: "9VyPZTthc2yB42unifChcbqkLev4JFKGzkzQXYi9UBjo_j87R-LIbaHys2KwAKu7", // genius developer access token
-    //     title: this.cancion,
-    //     artist: this.artista,
-    //     optimizeQuery: true
-    //   };
-    //   getLyrics(options).then(lyrics => {
-    //     lyrics = lyrics.split('\n')
-    //     this.letra = lyrics.filter(n=>n && !n.startsWith('['));
-    //   })
-    // },
     callGeniusApi() {
       axios
-      .get('https://api.genius.com/search?q=paranoid&access_token=9VyPZTthc2yB42unifChcbqkLev4JFKGzkzQXYi9UBjo_j87R-LIbaHys2KwAKu7')
-      // .get('https://api.genius.com/oauth/authorize?'+
-      //                                                 'client_id=tI-b_xaAtcPl0HD9HlH-_OsytshvmruhM2KzkbtDJGMMwiCExZ6l2dXt5Jti1r64&'+
-      //                                                 'redirect_uri=http://localhost:8080&'+
-      //                                                 'scope=annotation&'+
-      //                                                 'state=200&'+
-      //                                                 'response_type=code')
-      .then(response => (this.info = response))
+      .get(`https://api.genius.com/search?q=${this.cancion}${this.artista}&access_token=9VyPZTthc2yB42unifChcbqkLev4JFKGzkzQXYi9UBjo_j87R-LIbaHys2KwAKu7`)
+      .then( (response) => {
+        const hits = response.data.response.hits;
+        if( hits.length > 0 ){
+          console.log('encontre alggo');
+          const results = hits.map(val => {
+            const { full_title, path } = val.result;
+            return { title: full_title, path };
+          });
+
+
+          const baseUrl    = 'https://cors-anywhere.herokuapp.com/https://www.genius.com';
+          const lyricsUrl  = baseUrl + results[0].path;
+              
+          axios.get(lyricsUrl).then( (res) => {
+            const $ = cio.load(res.data);
+            const selector = $('div[class="lyrics"]');
+            
+            const lyrics = selector.text().trim().split('\n');
+            this.letra = lyrics.filter(n=>n && !n.startsWith('['));
+          });
+        }
+      })
     }
   }
 };
