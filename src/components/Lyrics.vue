@@ -18,7 +18,7 @@
           <div class="img-container">
             <img :src="'/img/' + n + '.png'" alt="">
           </div>
-          <p>{{lyrics[n]}}</p>
+          <p>{{lyrics[n-1]}}</p>
         </div>
       </div>
     </div>
