@@ -39,7 +39,6 @@ export default {
       .then( (response) => {
         const hits = response.data.response.hits;
         if( hits.length > 0 ){
-          console.log('encontre alggo');
           const results = hits.map(val => {
             const { full_title, path } = val.result;
             return { title: full_title, path };
